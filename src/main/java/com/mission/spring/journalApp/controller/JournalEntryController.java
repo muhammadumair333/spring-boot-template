@@ -1,6 +1,6 @@
 package com.mission.spring.journalApp.controller;
 
-import com.mission.spring.journalApp.entity.JournalEntity;
+import com.mission.spring.journalApp.entity.JournalEntry;
 import com.mission.spring.journalApp.service.JournalEntryService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +14,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/journal")
-public class JournalEntryControllerV2 {
+public class JournalEntryController {
 
     @Autowired
     private JournalEntryService journalEntryService;
 
     @PostMapping
-    public ResponseEntity<JournalEntity> setData(@RequestBody JournalEntity singleEntry) {
+    public ResponseEntity<JournalEntry> setData(@RequestBody JournalEntry singleEntry) {
         try {
             singleEntry.setUpdatedAt(LocalDateTime.now());
             journalEntryService.saveJournalEntry(singleEntry);
@@ -32,15 +32,15 @@ public class JournalEntryControllerV2 {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<JournalEntity> journalEntities = journalEntryService.getAll();
+        List<JournalEntry> journalEntities = journalEntryService.getAll();
         if(journalEntities != null && !journalEntities.isEmpty())
             return new ResponseEntity<>(journalEntities, HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/id/{myId}")
-    public ResponseEntity<JournalEntity> getById(@PathVariable ObjectId myId) {
-        Optional<JournalEntity> journalEntity =  journalEntryService.getById(myId);
+    public ResponseEntity<JournalEntry> getById(@PathVariable ObjectId myId) {
+        Optional<JournalEntry> journalEntity =  journalEntryService.getById(myId);
         if(journalEntity.isPresent()){
             return new ResponseEntity<>(journalEntity.get(), HttpStatus.OK);
         }
@@ -54,8 +54,8 @@ public class JournalEntryControllerV2 {
     }
 
     @PutMapping("/id/{myId}")
-    public ResponseEntity<JournalEntity> updateById(@PathVariable ObjectId myId, @RequestBody JournalEntity updatedEntry) {
-        JournalEntity oldEntry = journalEntryService.getById(myId).orElse(null);
+    public ResponseEntity<JournalEntry> updateById(@PathVariable ObjectId myId, @RequestBody JournalEntry updatedEntry) {
+        JournalEntry oldEntry = journalEntryService.getById(myId).orElse(null);
         if (oldEntry != null) {
             oldEntry.setTitle(updatedEntry.getTitle() != null && !updatedEntry.getTitle().isEmpty()
                     ? updatedEntry.getTitle() : oldEntry.getTitle());

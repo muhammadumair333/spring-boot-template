@@ -1,6 +1,6 @@
 package com.mission.spring.journalApp.service;
 
-import com.mission.spring.journalApp.entity.JournalEntity;
+import com.mission.spring.journalApp.entity.JournalEntry;
 import com.mission.spring.journalApp.repository.JournalEntryRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +15,15 @@ public class JournalEntryService {
     @Autowired
     private JournalEntryRepository journalEntryRepository;
 
-    public void saveJournalEntry(JournalEntity entity){
+    public void saveJournalEntry(JournalEntry entity){
         journalEntryRepository.save(entity);
     }
 
-    public List<JournalEntity> getAll(){
+    public List<JournalEntry> getAll(){
         return journalEntryRepository.findAll();
     }
 
-    public Optional<JournalEntity> getById(ObjectId id){
+    public Optional<JournalEntry> getById(ObjectId id){
         return journalEntryRepository.findById(id);
     }
 

@@ -43,8 +43,8 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>2.7.7</version>
         </dependency>
 
         <dependency>
@@ -53,6 +53,8 @@
             <version>1.18.38</version>
             <scope>provided</scope>
         </dependency>
+
+
     </dependencies>
 
     <build>

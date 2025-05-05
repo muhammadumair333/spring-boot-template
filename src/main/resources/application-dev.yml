@@ -1,0 +1,25 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://umairsheikh1991:b4VYnnT3%40DE6iB5@springboot.hrlnepl.mongodb.net/?retryWrites=true&w=majority&appName=SpringBoot
+      database: journaldb
+      auto-index-creation: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: muhammad.umair@jeeny.me
+    password: znxz hykm ffhp xmon
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
+
+server:
+  port: 8080
+  servlet:
+    context-path: /journal

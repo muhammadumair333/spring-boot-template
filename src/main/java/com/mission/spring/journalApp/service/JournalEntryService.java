@@ -21,30 +21,39 @@ public class JournalEntryService {
     private UserService userService;
 
     @Transactional
-    public void saveJournalEntry(JournalEntry entity, String userName){
+    public void saveJournalEntry(JournalEntry entity, String userName) {
         try {
             User user = userService.getUserByName(userName);
             entity.setUpdatedAt(LocalDateTime.now());
             JournalEntry journalEntry = journalEntryRepository.save(entity);
             user.getJournalEntries().add(journalEntry);
             userService.saveUser(user);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("An Error occurred while adding entry", e);
         }
     }
 
-    public List<JournalEntry> getAll(){
+    public List<JournalEntry> getAll() {
         return journalEntryRepository.findAll();
     }
 
-    public Optional<JournalEntry> getById(ObjectId id){
+    public Optional<JournalEntry> getById(ObjectId id) {
         return journalEntryRepository.findById(id);
     }
 
-    public void deleteById(ObjectId id, String userName){
-        User user = userService.getUserByName(userName);
-        user.getJournalEntries().removeIf(x -> x.getId().equals(id));
-        userService.saveUser(user);
-        journalEntryRepository.deleteById(id);
+    @Transactional
+    public boolean deleteById(ObjectId id, String userName) {
+        boolean removed = false;
+        try {
+            User user = userService.getUserByName(userName);
+            removed = user.getJournalEntries().removeIf(x -> x.getId().equals(id));
+            if (removed) {
+                userService.saveUser(user);
+                journalEntryRepository.deleteById(id);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("An Error occurred while doing transaction", e);
+        }
+        return removed;
     }
 }
